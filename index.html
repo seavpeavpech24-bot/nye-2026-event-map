@@ -1,1 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>La Passion Resort - Map & NYE Party Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* 🎨 LUXURY RESORT COLOR PALETTE */
+        :root {
+            /* Primary Colors - Ocean & Tropical */
+            --ocean-deep: #0A4D68;
+            --ocean-blue: #088395;
+            --tropical-teal: #05BFDB;
+            --sand-beige: #E8DCC4;
+            
+            /* Accent Colors */
+            --gold-accent: #C9A961;
+            --soft-gold: #D4AF37;
+            --warm-coral: #FF6B6B;
+            
+            /* Neutral Colors */
+            --cream-white: #FAF8F3;
+            --warm-gray: #F5F1E8;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            
+            /* Background Colors */
+            --bg-primary: #FDFBF7;
+            --bg-secondary: #F8F6F0;
+            --bg-card: #FFFFFF;
+        }
+        
+        /* Typography */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: -0.01em;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        /* Map container styles */
+        #mapContainer {
+            touch-action: none;
+            cursor: grab;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-blue) 100%);
+        }
+        
+        #mapContainer:active {
+            cursor: grabbing;
+        }
+        
+        #mapImage {
+            transform-origin: center center;
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: none;
+            display: block;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Elegant scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--warm-gray);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-accent);
+            border-radius: 5px;
+            border: 2px solid var(--warm-gray);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--soft-gold);
+        }
+        
+        /* Luxury gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--tropical-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(135deg, var(--gold-accent) 0%, var(--soft-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Soft shadows */
+        .shadow-soft {
+            box-shadow: 0 4px 20px rgba(10, 77, 104, 0.08);
+        }
+        
+        .shadow-soft-lg {
+            box-shadow: 0 10px 40px rgba(10, 77, 104, 0.12);
+        }
+        
+        /* Hover effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(10, 77, 104, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#FDFBF7] via-[#F8F6F0] to-[#FAF8F3] text-[#2C3E50] min-h-screen">
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E8DCC4]/40 shadow-soft">
+        <div class="container mx-auto px-4 sm:px-6 py-4 sm:py-5">
+            <div class="flex items-center justify-between">
+                <!-- Company Logo -->
+                <div class="flex items-center space-x-3">
+                    <img src="logo.png" alt="La Passion Resort" class="h-10 sm:h-14 w-auto object-contain">
+                </div>
+                
+                <!-- Tab Navigation -->
+                <nav class="flex space-x-2 sm:space-x-3">
+                    <button id="mapTab" class="tab-btn px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium transition-all duration-300 bg-gradient-to-r from-[#088395] to-[#05BFDB] text-white shadow-soft hover-lift">
+                        <i class="fas fa-map-marked-alt text-lg sm:text-xl"></i>
+                        <span class="hidden sm:inline ml-2 text-sm tracking-wide">Map</span>
+                    </button>
+                    <button id="partyTab" class="tab-btn px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium transition-all duration-300 bg-[#F5F1E8] text-[#2C3E50] hover:bg-[#E8DCC4] shadow-soft hover-lift">
+                        <i class="fas fa-glass-cheers text-lg sm:text-xl"></i>
+                        <span class="hidden sm:inline ml-2 text-sm tracking-wide">Party</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto">
+        
+        <!-- Map Section -->
+        <section id="mapSection" class="section-content fade-in">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6 gradient-text">Interactive Resort Map</h2>
+                
+                <!-- Map Controls -->
+                <div class="flex justify-center gap-3 sm:gap-4 mb-6">
+                    <button id="zoomIn" class="bg-gradient-to-r from-[#088395] to-[#05BFDB] hover:from-[#0A4D68] hover:to-[#088395] text-white font-medium py-3 px-5 sm:px-6 rounded-xl shadow-soft transition-all duration-300 hover-lift active:scale-95">
+                        <i class="fas fa-search-plus text-xl"></i>
+                        <span class="hidden sm:inline ml-2 text-sm tracking-wide">Zoom In</span>
+                    </button>
+                    <button id="zoomOut" class="bg-gradient-to-r from-[#088395] to-[#05BFDB] hover:from-[#0A4D68] hover:to-[#088395] text-white font-medium py-3 px-5 sm:px-6 rounded-xl shadow-soft transition-all duration-300 hover-lift active:scale-95">
+                        <i class="fas fa-search-minus text-xl"></i>
+                        <span class="hidden sm:inline ml-2 text-sm tracking-wide">Zoom Out</span>
+                    </button>
+                    <button id="resetZoom" class="bg-[#F5F1E8] hover:bg-[#E8DCC4] text-[#2C3E50] font-medium py-3 px-5 sm:px-6 rounded-xl shadow-soft transition-all duration-300 hover-lift active:scale-95">
+                        <i class="fas fa-redo text-xl"></i>
+                        <span class="hidden sm:inline ml-2 text-sm tracking-wide">Reset</span>
+                    </button>
+                </div>
+                
+                <!-- Map Container -->
+                <div id="mapContainer" class="w-full h-[60vh] sm:h-[65vh] rounded-2xl shadow-soft-lg border border-[#E8DCC4]/50 overflow-hidden">
+                    <img id="mapImage" 
+                         src="map.jpg" 
+                         alt="Resort Map"
+                         class="w-full h-full object-contain">
+                </div>
+                
+                <!-- Map Instructions -->
+                <div class="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-[#E8DCC4]/50 shadow-soft">
+                    <p class="text-sm sm:text-base text-[#7F8C8D] leading-relaxed">
+                        <i class="fas fa-mobile-alt inline-block mr-2"></i><strong class="text-[#2C3E50]">Touch:</strong> Pinch to zoom, drag to pan, double-tap to zoom in<br>
+                        <i class="fas fa-mouse inline-block mr-2"></i><strong class="text-[#2C3E50]">Desktop:</strong> Use buttons above or scroll wheel to zoom
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Party Guide Section -->
+        <section id="partySection" class="section-content hidden">
+            <div class="p-4 sm:p-6 lg:p-8 pb-12">
+                
+                <!-- Hero Banner -->
+                <div class="bg-gradient-to-br from-[#0A4D68] via-[#1a1a2e] to-[#0A4D68] rounded-2xl p-8 sm:p-12 mb-8 shadow-soft-lg relative overflow-hidden text-center">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+                    <div class="relative z-10">
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-white tracking-tight">NEW YEAR PARTY</h1>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-3 text-[#D4AF37]">LA PASSION</h2>
+                        <p class="text-base sm:text-lg text-white/80 font-light tracking-widest">by Achariyak</p>
+                    </div>
+                </div>
+
+                <!-- Event Schedule -->
+                <div class="mb-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-6 text-center gradient-text">TIME | ACTIVITIES</h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#C9A961] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#C9A961] font-bold text-base sm:text-lg whitespace-nowrap">6:30 PM – 7:15 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">Welcome cocktail reception at the Infinity Pool</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#088395] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#088395] font-bold text-base sm:text-lg whitespace-nowrap">7:15 PM – 7:30 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">Guests take their seats</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#05BFDB] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#05BFDB] font-bold text-base sm:text-lg whitespace-nowrap">7:30 PM – 9:30 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">Seated gala dinner with DJ lounge music</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#FF6B6B] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#FF6B6B] font-bold text-base sm:text-lg whitespace-nowrap">9:30 PM – 9:50 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">Lantern ceremony</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#D4AF37] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#D4AF37] font-bold text-base sm:text-lg whitespace-nowrap">9:50 PM – 10:10 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">Fire show performance</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#088395] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#088395] font-bold text-base sm:text-lg whitespace-nowrap">10:10 PM – 11:30 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">DJ music & dancing</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-4 sm:p-5 border-l-4 border-[#C9A961] hover:shadow-soft-lg transition-all duration-300 hover-lift">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-[#C9A961] font-bold text-base sm:text-lg whitespace-nowrap">11:30 PM – 11:45 PM</span>
+                                <p class="text-[#2C3E50] text-sm sm:text-base leading-relaxed">Lucky draw</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-[#C9A961] to-[#D4AF37] rounded-xl p-5 sm:p-6 border-2 border-[#D4AF37]/50 shadow-soft-lg">
+                            <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                                <span class="text-white font-bold text-lg sm:text-xl whitespace-nowrap">11:45 PM – 11:59 PM</span>
+                                <p class="text-white text-sm sm:text-base leading-relaxed font-medium">
+                                    <i class="fas fa-glass-cheers mr-2"></i>Champagne toast & New Year countdown
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Includes -->
+                <div class="mb-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-6 gradient-text">TICKET INCLUDES</h3>
+                    <div class="bg-gradient-to-br from-[#F8F8F8] to-[#F0F0F0] rounded-2xl p-6 sm:p-8 shadow-soft-lg border border-[#E0E0E0]">
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3 text-[#2C3E50]">
+                                <i class="fas fa-check-circle text-[#C9A961] text-xl mt-0.5"></i>
+                                <span class="text-sm sm:text-base leading-relaxed">Welcome cocktail & champagne toast at midnight</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-[#2C3E50]">
+                                <i class="fas fa-check-circle text-[#C9A961] text-xl mt-0.5"></i>
+                                <span class="text-sm sm:text-base leading-relaxed">Curated international & local buffet dinner</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-[#2C3E50]">
+                                <i class="fas fa-check-circle text-[#C9A961] text-xl mt-0.5"></i>
+                                <span class="text-sm sm:text-base leading-relaxed">DJ music & dancing throughout the evening</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-[#2C3E50]">
+                                <i class="fas fa-check-circle text-[#C9A961] text-xl mt-0.5"></i>
+                                <span class="text-sm sm:text-base leading-relaxed">Festive activities & lucky draw</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-[#2C3E50]">
+                                <i class="fas fa-check-circle text-[#C9A961] text-xl mt-0.5"></i>
+                                <span class="text-sm sm:text-base leading-relaxed">New Year countdown by the sea</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Dress Code Highlight -->
+                <div class="mb-8">
+                    <div class="bg-gradient-to-r from-[#F8F6F0] to-[#FAF8F3] rounded-2xl p-6 sm:p-8 border-2 border-[#C9A961]/30 shadow-soft-lg text-center">
+                        <p class="text-[#2C3E50] text-base sm:text-lg leading-relaxed">
+                            <span class="text-2xl mr-2"></span>
+                            <strong class="text-[#C9A961] font-semibold">Recommended Dress Code:</strong> 
+                            <span class="font-medium">White</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <!-- <div class="mb-8">
+                    <a href="#book" class="block w-full sm:w-auto sm:max-w-md mx-auto">
+                        <button class="w-full bg-gradient-to-r from-[#C9A961] to-[#D4AF37] hover:from-[#D4AF37] hover:to-[#C9A961] text-white font-semibold text-lg sm:text-xl py-4 sm:py-5 px-8 rounded-2xl shadow-soft-lg transition-all duration-300 hover-lift active:scale-95">
+                            BOOK NOW
+                        </button>
+                    </a>
+                </div> -->
+
+                <!-- Contact Information -->
+                <div class="mb-8">
+                    <div class="bg-gradient-to-br from-[#F8F8F8] to-[#F0F0F0] rounded-2xl p-6 sm:p-8 shadow-soft border border-[#E0E0E0]">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-5 text-center gradient-text">Contact Us</h3>
+                        <div class="space-y-4 text-center">
+                            <a href="tel:0700890906610000" class="flex items-center justify-center gap-3 text-[#2C3E50] hover:text-[#088395] transition-colors duration-300">
+                                <i class="fas fa-phone-alt text-2xl"></i>
+                                <span class="text-base sm:text-lg font-medium">070 | 089 | 090 66 1000</span>
+                            </a>
+                            <a href="mailto:reservations@achariyak.com" class="flex items-center justify-center gap-3 text-[#2C3E50] hover:text-[#088395] transition-colors duration-300">
+                                <i class="fas fa-envelope text-2xl"></i>
+                                <span class="text-base sm:text-lg font-medium">reservations@achariyak.com</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Footer -->
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center gap-2 text-[#7F8C8D] text-sm sm:text-base px-6 py-3">
+                        <i class="fas fa-map-marker-alt text-xl"></i>
+                        <span>Saracen Bay, Koh Rong Sanloem, Preah Sihanouk</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // ========================================
+        // TAB NAVIGATION
+        // ========================================
+        const mapTab = document.getElementById('mapTab');
+        const partyTab = document.getElementById('partyTab');
+        const mapSection = document.getElementById('mapSection');
+        const partySection = document.getElementById('partySection');
+
+        function switchTab(showMap) {
+            if (showMap) {
+                mapSection.classList.remove('hidden');
+                partySection.classList.add('hidden');
+                mapTab.classList.add('bg-gradient-to-r', 'from-[#088395]', 'to-[#05BFDB]', 'text-white', 'shadow-soft');
+                mapTab.classList.remove('bg-[#F5F1E8]', 'text-[#2C3E50]');
+                partyTab.classList.remove('bg-gradient-to-r', 'from-[#088395]', 'to-[#05BFDB]', 'text-white', 'shadow-soft');
+                partyTab.classList.add('bg-[#F5F1E8]', 'text-[#2C3E50]');
+            } else {
+                mapSection.classList.add('hidden');
+                partySection.classList.remove('hidden');
+                partyTab.classList.add('bg-gradient-to-r', 'from-[#088395]', 'to-[#05BFDB]', 'text-white', 'shadow-soft');
+                partyTab.classList.remove('bg-[#F5F1E8]', 'text-[#2C3E50]');
+                mapTab.classList.remove('bg-gradient-to-r', 'from-[#088395]', 'to-[#05BFDB]', 'text-white', 'shadow-soft');
+                mapTab.classList.add('bg-[#F5F1E8]', 'text-[#2C3E50]');
+            }
+        }
+
+        mapTab.addEventListener('click', () => switchTab(true));
+        partyTab.addEventListener('click', () => switchTab(false));
+
+        // ========================================
+        // INTERACTIVE MAP WITH ZOOM & PAN
+        // ========================================
+        const mapContainer = document.getElementById('mapContainer');
+        const mapImage = document.getElementById('mapImage');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const resetZoomBtn = document.getElementById('resetZoom');
+
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let lastX = 0;
+        let lastY = 0;
+
+        const MIN_SCALE = 1;
+        const MAX_SCALE = 4;
+        const ZOOM_STEP = 0.3;
+
+        // Apply transform to image
+        function updateTransform() {
+            mapImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        // Constrain translation to prevent image from going out of bounds
+        function constrainTranslation() {
+            const containerRect = mapContainer.getBoundingClientRect();
+            const imageRect = mapImage.getBoundingClientRect();
+            
+            const maxX = Math.max(0, (imageRect.width - containerRect.width) / 2);
+            const maxY = Math.max(0, (imageRect.height - containerRect.height) / 2);
+            
+            translateX = Math.max(-maxX, Math.min(maxX, translateX));
+            translateY = Math.max(-maxY, Math.min(maxY, translateY));
+        }
+
+        // Zoom function
+        function zoom(delta, centerX = null, centerY = null) {
+            const oldScale = scale;
+            scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale + delta));
+            
+            // If zooming to a specific point
+            if (centerX !== null && centerY !== null && scale !== oldScale) {
+                const rect = mapContainer.getBoundingClientRect();
+                const offsetX = centerX - rect.left - rect.width / 2;
+                const offsetY = centerY - rect.top - rect.height / 2;
+                
+                translateX -= offsetX * (scale / oldScale - 1);
+                translateY -= offsetY * (scale / oldScale - 1);
+            }
+            
+            // Reset translation when zooming out to minimum
+            if (scale === MIN_SCALE) {
+                translateX = 0;
+                translateY = 0;
+            } else {
+                constrainTranslation();
+            }
+            
+            updateTransform();
+        }
+
+        // Button controls
+        zoomInBtn.addEventListener('click', () => zoom(ZOOM_STEP));
+        zoomOutBtn.addEventListener('click', () => zoom(-ZOOM_STEP));
+        resetZoomBtn.addEventListener('click', () => {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        });
+
+        // Mouse/Touch drag to pan
+        function getEventCoords(e) {
+            if (e.touches && e.touches.length > 0) {
+                return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+            return { x: e.clientX, y: e.clientY };
+        }
+
+        mapContainer.addEventListener('mousedown', startDrag);
+        mapContainer.addEventListener('touchstart', startDrag);
+
+        function startDrag(e) {
+            if (e.touches && e.touches.length > 1) return; // Ignore multi-touch for dragging
+            
+            isDragging = true;
+            const coords = getEventCoords(e);
+            startX = coords.x - translateX;
+            startY = coords.y - translateY;
+            lastX = coords.x;
+            lastY = coords.y;
+            
+            mapContainer.style.cursor = 'grabbing';
+        }
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag);
+
+        function drag(e) {
+            if (!isDragging) return;
+            if (scale === MIN_SCALE) return; // Don't pan if not zoomed
+            
+            e.preventDefault();
+            const coords = getEventCoords(e);
+            
+            translateX = coords.x - startX;
+            translateY = coords.y - startY;
+            
+            constrainTranslation();
+            updateTransform();
+            
+            lastX = coords.x;
+            lastY = coords.y;
+        }
+
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
+
+        function endDrag() {
+            isDragging = false;
+            mapContainer.style.cursor = 'grab';
+        }
+
+        // Double-tap to zoom
+        let lastTap = 0;
+        mapContainer.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 300 && tapLength > 0) {
+                const coords = getEventCoords(e);
+                zoom(ZOOM_STEP, coords.x, coords.y);
+                e.preventDefault();
+            }
+            
+            lastTap = currentTime;
+        });
+
+        // Pinch to zoom (touch)
+        let initialDistance = 0;
+        let initialScale = 1;
+
+        mapContainer.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                initialDistance = getDistance(e.touches[0], e.touches[1]);
+                initialScale = scale;
+            }
+        });
+
+        mapContainer.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = getDistance(e.touches[0], e.touches[1]);
+                const delta = (currentDistance - initialDistance) * 0.01;
+                
+                const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+                
+                scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, initialScale + delta));
+                
+                if (scale === MIN_SCALE) {
+                    translateX = 0;
+                    translateY = 0;
+                } else {
+                    constrainTranslation();
+                }
+                
+                updateTransform();
+            }
+        });
+
+        function getDistance(touch1, touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        // Mouse wheel zoom (desktop)
+        mapContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
+            zoom(delta, e.clientX, e.clientY);
+        });
+
+        // Initialize
+        updateTransform();
+    </script>
+
+</body>
+</html>
 
